@@ -4,7 +4,7 @@ import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class BoardService {
-private api = `${environment.apiUrl}/auth`;
+private api = `${environment.apiUrl}/tasks`;
   //private api = 'https://localhost:7297/api/tasks';
 
   constructor(private http: HttpClient) {}
