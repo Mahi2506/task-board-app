@@ -111,7 +111,9 @@
           <div class="task-info">
             <h4>{{ task.title }}</h4>
             <p>{{ task.description }}</p>
-            <small>{{ formatDate(task.completedAt).split(',')[0] }}</small>
+     <small>
+  {{ task.createdAt | date:'mediumDate' }}
+</small>
           </div>
 
         <button class="delete-btn" (click)="deleteTask(task)">🗑 Delete</button>

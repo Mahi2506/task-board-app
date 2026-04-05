@@ -76,7 +76,18 @@ checkboxEvent: any = null;
     next: (res) => {
       console.log('API RESPONSE:', res);
 
-      this.tasks = res;
+      this.tasks = res.map((t: any) => {
+  const fixed = t.createdAt.replace(' ', 'T') + 'Z';
+
+  const utc = new Date(fixed);
+
+  return {
+    ...t,
+    createdAt: new Date(
+      utc.getTime() + (5.5 * 60 * 60 * 1000)
+    )
+  };
+});
       this.loading = false;
 
       this.cdr.detectChanges(); 
