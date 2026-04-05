@@ -1,0 +1,92 @@
+<div class="auth-page">
+
+  <!-- LEFT SIDE -->
+  <div class="auth-left">
+    <div class="overlay"></div>
+
+    <div class="content">
+      <h1>TaskBoard</h1>
+
+      <h2>
+        Organize your <br>
+        <span>work, your way.</span>
+      </h2>
+
+      <p>
+        Track tasks, hit deadlines, stay focused — all in one place.
+      </p>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="auth-right">
+
+    <div class="auth-card">
+
+      <h2 *ngIf="!isRegisterMode">Login</h2>
+      <h2 *ngIf="isRegisterMode">Create account</h2>
+
+      <!-- NAME -->
+      <div class="form-group" *ngIf="isRegisterMode">
+        <input type="text" [(ngModel)]="name" required />
+        <label>Name</label>
+      </div>
+
+      <!-- EMAIL -->
+      <div class="form-group">
+        <input type="email" [(ngModel)]="email" (input)="onInputChange()"required />
+        <label>Email</label>
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="form-group password-group">
+        <input [type]="showPwd ? 'text' : 'password'" [(ngModel)]="password"  (input)="onInputChange()" required />
+        <label>Password</label>
+
+        <span class="eye" (click)="showPwd = !showPwd">
+          {{ showPwd ? '🙈' : '👁️' }}
+        </span>
+      </div>
+     
+      <!-- ERROR -->
+      <div *ngIf="error" class="error">{{ error }}</div> 
+      <div *ngIf="successerror" class="successerror">{{ successerror }}</div>
+      <!-- BUTTONS -->
+      <button 
+      type="button"
+        *ngIf="!isRegisterMode" 
+        (click)="onLogin()" 
+        class="btn login-btn"
+        [disabled]="loading">
+        <span [ngClass]="{ 'loading-text': loading }">
+            {{ loading ? 'Loading...' : 'Sign In' }}
+        </span>
+      </button>
+
+      <button 
+      type="button"
+        *ngIf="isRegisterMode" 
+        (click)="onRegister()" 
+        class="btn register-btn"
+        [disabled]="loading">
+        <span>
+             {{ loading ? 'Creating...' : 'Create Account' }}
+         </span>
+      </button>
+
+      <!-- TOGGLE -->
+      <p class="link" *ngIf="!isRegisterMode">
+        Don't have an account?
+        <a class="create-account-link" (click)="isRegisterMode = true">Create account</a>
+      </p>
+
+      <p class="link" *ngIf="isRegisterMode">
+        Already have an account?
+        <a class="create-account-link" (click)="isRegisterMode = false">Login</a>
+      </p>
+
+      
+    </div>
+
+  </div>
+</div>
