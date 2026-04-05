@@ -35,7 +35,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAngular",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
+            policy.WithOrigins("http://localhost:4200", "https://task-board-app.netlify.app")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -56,14 +56,24 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Enter: Bearer {your-token}",
         Name = "Authorization",
         In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement {{
-        new OpenApiSecurityScheme {
-            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-        }, Array.Empty<string>()
-    }});
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
 });
 
 var app = builder.Build();
@@ -74,6 +84,8 @@ using (var scope = app.Services.CreateScope())
     db.Database.ExecuteSqlRaw("PRAGMA journal_mode=WAL;");
 
     db.Database.Migrate();
+
+    db.Database.EnsureCreated();
 }
 app.UseCors("AllowAngular");
 app.UseMiddleware<ExceptionMiddleware>();
